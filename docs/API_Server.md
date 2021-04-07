@@ -2,7 +2,10 @@ This document describes Klipper's Application Programmer Interface
 (API). This interface enables external applications to query and
 control the Klipper host software.
 
-Enabling the API socket
+本文档描述了Klipper的应用程序编程接口(API)。该接口允许外部应用程序查询和控制Klipper主机软件。
+
+
+Enabling the API socket 启用API 套接口
 =======================
 
 In order to use the API server, the klippy.py host software must be
@@ -10,12 +13,18 @@ started with the `-a` parameter. For example:
 ```
 ~/klippy-env/bin/python ~/klipper/klippy/klippy.py ~/printer.cfg -a /tmp/klippy_uds -l /tmp/klippy.log
 ```
-
 This causes the host software to create a Unix Domain Socket. A client
 can then open a connection on that socket and send commands to
 Klipper.
 
-Request format
+为了使用API服务，klippy.py 主机软件格式必须是`-a` 开头，示例：
+```
+~/klippy-env/bin/python ~/klipper/klippy/klippy.py ~/printer.cfg -a /tmp/klippy_uds -l /tmp/klippy.log
+```
+这将使主机软件创建一个Unix域接口，然后打开接口，通过接口向Klipper 发送命令。
+
+
+Request format 请求格式
 ==============
 
 Messages sent and received on the socket are JSON encoded strings
@@ -35,6 +44,20 @@ Klipper, and report the results. The tool expects each JSON command to
 be on a single line, and it will automatically append the 0x03
 terminator when transmitting a request. (The Klipper API server does
 not have a newline requirement.)
+
+Request format 请求格式
+==============
+在接口上发送和接收消息都是JSON格式字符串，以ASCII 0x03字符结束：
+```
+<json_object_1><0x03><json_object_2><0x03>...
+```
+Klipper 包含一个 a `scripts/whconsole.py` 工具，用以执行上述的Json 字符串消息。示例如下：
+```
+~/klipper/scripts/whconsole.py /tmp/klippy_uds
+```
+这工具可以从Stdin 读取JSON 指令，并发送到 Klipper，并返回结果。
+该工具执行的JSON格式字符串必须是一行，它将自动附加 0x03，
+（0x03）是请求命令的终止符。（Klipper API 接口 命令要求没有换行）
 
 API Protocol
 ============
