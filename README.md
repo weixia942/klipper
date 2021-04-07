@@ -1,3 +1,4 @@
+Welcome to the Klipper project!
 欢迎来到 Klipper 项目
 
 [![Klipper](docs/img/klipper-logo-small.png)](https://www.klipper3d.org/)
